@@ -7,12 +7,13 @@ from users.serializers import UserSerializer
 class CourseDisplaySerializer(ModelSerializer):
     student_no = serializers.IntegerField(source='get_enrolled_student')
     author = UserSerializer()
-    image_url=serializers.CharField(source="get_absolute_image_url")
+    #change
+    # image_url=serializers.CharField(source="get_absolute_image_url")
 
     class Meta:
         model = Course
-        fields = ["course_uuid", "title", "student_no", "author", "price", "image_url"]
-
+        fields = ["course_uuid", "title", "student_no", "author", "price"]
+        #:   ,"image_url"
 class CommentSerializer(ModelSerializer):
     user = UserSerializer(read_only=True)
     class Meta:
@@ -71,11 +72,13 @@ class CourseUnpaidSerializer(ModelSerializer):
     student_no=serializers.IntegerField(source='get_enrolled_student')
     total_lectures=serializers.IntegerField(source='get_total_lectures')
     total_duration=serializers.CharField(source='total_course_length')
-    image_url=serializers.CharField(source='get_absolute_image_url')
+    #change
+    # image_url=serializers.CharField(source='get_absolute_image_url')
     class Meta:
         model=Course
         exclude=[
-            'id'
+            'id',
+            'image_url'
         ]
 
 class CoursePaidSerializer(ModelSerializer):
@@ -85,19 +88,22 @@ class CoursePaidSerializer(ModelSerializer):
     student_no=serializers.IntegerField(source='get_enrolled_student')
     total_lectures=serializers.IntegerField(source='get_total_lectures')
     total_duration=serializers.CharField(source='total_course_length')
-    image_url=serializers.CharField(source='get_absolute_image_url')
+    #change
+    # image_url=serializers.CharField(source='get_absolute_image_url')
     class Meta:
         model=Course
         exclude=[
-            'id'
+            'id',
+            'image_url'
         ]
-#change
+
 class CourseListSerailizer(ModelSerializer):
     student_no=serializers.IntegerField(source='get_enrolled_student')
     author=UserSerializer()
     description=serializers.CharField(source='get_brief_description')
     total_lectures=serializers.IntegerField(source='get_total_lectures')
-    image_url=serializers.CharField(source='get_absolute_image_url')
+    #change
+    # image_url=serializers.CharField(source='get_absolute_image_url')
     class Meta:
         model=Course
         fields =[
@@ -106,21 +112,22 @@ class CourseListSerailizer(ModelSerializer):
             'student_no',
             'author',
             'price',
-            'image_url',
+            # 'image_url',
             'description',
             'total_lectures'
         ]
-#change:
+#change:'image_url',
 class CartItemserializer(ModelSerializer):
     author=UserSerializer()
-    image_url = serializers.CharField(source='get_absolute_image_url')
+    #change
+    # image_url = serializers.CharField(source='get_absolute_image_url')
     
     class Meta:
         model = Course
         fields = [
             'author',
             'title',
-            'price',
-            'image_url'
+            'price'
+            # 'image_url'
         ]
 
