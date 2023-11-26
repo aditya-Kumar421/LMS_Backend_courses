@@ -77,8 +77,7 @@ class CourseUnpaidSerializer(ModelSerializer):
     class Meta:
         model=Course
         exclude=[
-            'id',
-            'image_url'
+            'id'
         ]
 
 class CoursePaidSerializer(ModelSerializer):
@@ -93,8 +92,7 @@ class CoursePaidSerializer(ModelSerializer):
     class Meta:
         model=Course
         exclude=[
-            'id',
-            'image_url'
+            'id'
         ]
 
 class CourseListSerailizer(ModelSerializer):
