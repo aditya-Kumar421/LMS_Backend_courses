@@ -88,7 +88,7 @@ class AddComment(APIView):
 
         try:
             content = json.loads(request.body)   
-            
+
         except json.decoder.JSONDecodeError:
             return Response("Please a json body", status= status.HTTP_400_BAD_REQUEST)
 

@@ -38,8 +38,8 @@ INSTALLED_APPS = [
     "django.contrib.messages",
     "django.contrib.staticfiles",
     "corsheaders",
-    'courses',
-    'users',
+    "courses",
+    "users",
     "rest_framework",
     
 ]
@@ -61,14 +61,14 @@ CORS_ALLOW_ALL_ORIGINS = True
 #     "https://courses-eduverse.onrender.com/courses/",
 # ]
 
-CORS_ALLOW_METHODS = [
-    "DELETE",
-    "GET",
-    "OPTIONS",
-    "PATCH",
-    "POST",
-    "PUT"
-]
+# CORS_ALLOW_METHODS = [
+#     "DELETE",
+#     "GET",
+#     "OPTIONS",
+#     "PATCH",
+#     "POST",
+#     "PUT"
+# ]
 
 ROOT_URLCONF = "Eduverse.urls"
 
