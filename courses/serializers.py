@@ -3,7 +3,7 @@ from rest_framework import serializers
 from .models import Course, Comment, CourseSection, Episode
 from users.serializers import UserSerializer
 
-
+#change
 class CourseDisplaySerializer(ModelSerializer):
     student_no = serializers.IntegerField(source='get_enrolled_student')
     author = UserSerializer()
@@ -63,7 +63,7 @@ class CourseSectionPaidSerializer(ModelSerializer):
             'episodes',
             'total_duration',
         ]
-    
+#change
 class CourseUnpaidSerializer(ModelSerializer):
     comments=CommentSerializer(many=True)
     author = UserSerializer()
@@ -91,7 +91,7 @@ class CoursePaidSerializer(ModelSerializer):
         exclude=[
             'id'
         ]
-
+#change
 class CourseListSerailizer(ModelSerializer):
     student_no=serializers.IntegerField(source='get_enrolled_student')
     author=UserSerializer()
@@ -110,7 +110,7 @@ class CourseListSerailizer(ModelSerializer):
             'description',
             'total_lectures'
         ]
-
+#change:
 class CartItemserializer(ModelSerializer):
     author=UserSerializer()
     image_url = serializers.CharField(source='get_absolute_image_url')
@@ -123,5 +123,4 @@ class CartItemserializer(ModelSerializer):
             'price',
             'image_url'
         ]
-
 

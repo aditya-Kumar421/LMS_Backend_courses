@@ -10,7 +10,7 @@ class Sector(models.Model):
     name=models.CharField(max_length =255)
     sector_uuid =models.UUIDField(default=uuid.uuid4, unique=True)
     related_course=models.ManyToManyField('course',  blank=True)
-    sector_image=models.ImageField(upload_to='sector_image')
+    # sector_image=models.ImageField(upload_to='sector_image/')
 
     # /media/sector_image/what.png
     def get_image_absolute_url(self):
@@ -25,7 +25,7 @@ class Course(models.Model):
     language=models.CharField(max_length =50)
     course_section=models.ManyToManyField('CourseSection', blank=True)
     comments=models.ManyToManyField('Comment', blank=True)
-    image_url = models.ImageField(upload_to='course_images')
+    # image_url = models.ImageField(upload_to='course_images/')
     course_uuid = models.UUIDField(default=uuid.uuid4, unique=True)
     price = models.DecimalField(max_digits=5, decimal_places=2)
 
