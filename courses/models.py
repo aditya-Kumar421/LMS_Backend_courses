@@ -14,7 +14,7 @@ class Sector(models.Model):
 
     # /media/sector_image/what.png
     def get_image_absolute_url(self):
-        return 'http://localhost:8000'+self.sector_image.url
+        return 'https://courses-eduverse.onrender.com'+self.sector_image.url
     
 class Course(models.Model):
     title=models.CharField(max_length = 250)
@@ -39,7 +39,7 @@ class Course(models.Model):
     def get_total_lectures(self):
         lectures=0
         for section in self.course_section.all():
-            lectures+=len(section.episode.all())
+            lectures+=len(section.episodes.all())
         return lectures
 
     def total_course_length(self):
@@ -51,7 +51,7 @@ class Course(models.Model):
         return get_timer(length, type='short')
 
     def get_absolute_image_url(self):
-        return 'http://localhost:8000'+self.image_url.url
+        return 'https://courses-eduverse.onrender.com'+self.image_url.url
 
 class CourseSection(models.Model):
     section_title=models.CharField(max_length=255)
@@ -80,7 +80,7 @@ class Episode(models.Model):
         return get_timer(self.length)
     
     def get_absolute_url(self):
-        return 'http://localhost:8000'+self.file.url
+        return 'https://courses-eduverse.onrender.com'+self.file.url
     
     def save(self, *args, **kwargs):
         self.length=self.get_video_length()

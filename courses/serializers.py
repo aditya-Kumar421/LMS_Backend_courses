@@ -25,18 +25,21 @@ class EpisodeUnpaidSerializer(ModelSerializer):
     length=serializers.CharField(source='get_video_length_time')
     class Meta:
         model=Episode
-        exclude=[
-            'file'
+        fields=[
+            "title",
+            "length",
+            'id', 
         ]
 
 class EpisodePaidSerializer(ModelSerializer):
     length=serializers.CharField(source='get_video_length_time')
+    file=serializers.CharField(source='get_absolute_url')
     class Meta:
         model=Episode
         fields=[
-            'file',
-            'length',
-            'title',
+            "title",
+            "file",
+            "length",
         ]
 
 class CourseSectionUnPaidSerializer(ModelSerializer):
@@ -94,7 +97,7 @@ class CourseListSerailizer(ModelSerializer):
     author=UserSerializer()
     description=serializers.CharField(source='get_brief_description')
     total_lectures=serializers.IntegerField(source='get_total_lectures')
-    
+    image_url=serializers.CharField(source='get_absolute_image_url')
     class Meta:
         model=Course
         fields =[

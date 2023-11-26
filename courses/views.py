@@ -78,6 +78,7 @@ class SearchCourse(APIView):
 
 #Comment section in detail of course:
 class AddComment(APIView):
+    # permission_classes=[IsAuthenticated]
     def post(self, request, course_uuid):
         try:
             course = Course.objects.get(course_uuid=course_uuid)
@@ -141,6 +142,7 @@ class GetCartDetail(APIView):
 
 #Access to purchased courses:
 class CourseStudy(APIView):
+    # permission_classes=[IsAuthenticated]
     def get(self,request, course_uuid ):
         try:
             course=Course.objects.get(course_uuid=course_uuid)
