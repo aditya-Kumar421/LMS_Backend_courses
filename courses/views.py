@@ -1,6 +1,6 @@
 from .serializers import CourseDisplaySerializer, CourseUnpaidSerializer, CourseListSerailizer, CommentSerializer, CartItemserializer,CoursePaidSerializer
 
-from courses.models import Sector, Course
+from courses.models import Sector, Course#, CartItem
 from users.models import User
 
 from rest_framework.response import Response
@@ -107,9 +107,84 @@ class AddComment(APIView):
             return Response(data=serializer.errors,status =status.HTTP_400_BAD_REQUEST)
 
 #adding to cart courses:
-class GetCartDetail(APIView):
+#class GetCartDetail(APIView):
+    # def get(self, request):
+    #     cart_items = Course.objects.filter(user=request.user)
+    #     serializer = CartItemserializer(cart_items, many=True)
+    #     return Response(serializer.data)
+    
+    # def post(self,request,*args, **kwargs):
 
-    def post(self, request):
+    #     try:
+    #         body =  json.loads(request.body)
+        
+    #     except json.decoder.JSONDecodeError:
+    #         return HttpResponseBadRequest()
+
+    #     if type(body.get('cart')) != list:
+    #         return HttpResponseBadRequest()
+
+    #     if len(body.get("cart")) ==0:
+    #         return Response(data=[])
+
+    #     courses=[]
+
+    #     for uuid in body.get("cart"):
+    #         item = Course.objects.filter(course_uuid=uuid)
+
+    #         if not item:
+    #             return HttpResponseBadRequest()
+            
+    #         courses.append(item[0])
+
+    #         # serializer for cart
+    #     serializer =CartItemserializer(courses,many=True)
+
+    #     #TODO : After you have added the price field
+    #     cart_cost=Decimal(0.00)
+
+    #     for item in serializer.data:
+           
+    #         cart_cost+=Decimal(item.get("price"))
+
+    #     return Response(data={"cart_detail":serializer.data,"cart_total":str(cart_cost)})
+
+    # def get(self, request):
+    #     cart_items = CartItem.objects.filter(user=request.user)
+    #     serializer = CartItemserializer(cart_items, many=True)
+    #     return Response(serializer.data)
+
+    # def post(self, request):
+    #     serializer = CartItemserializer(data=request.data)
+    #     if serializer.is_valid():
+    #         cart_total = Decimal(0.00)
+    #         for item in serializer.data:
+    #             cart_total+=Decimal(item.get('price'))
+    #         serializer.save(user=request.user)
+    #         return Response(data={
+    #         'cart_detail':serializer.data,
+    #         'cart_total':cart_total
+    #     }, status = status.HTTP_200_OK)
+
+    #     return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+#adding with get and post both:
+class GetCartDetail(APIView):
+    def process_cart_data(self, cart_uuids):
+        courses = []
+        cart_cost = Decimal('0.00')
+
+        for uuid in cart_uuids:
+            item = Course.objects.filter(course_uuid=uuid)
+
+            if not item:
+                return None
+
+            courses.append(item[0])
+            cart_cost += item[0].price
+
+        return courses, cart_cost
+
+    def get(self, request):
         try:
             body = json.loads(request.body)
         except json.decoder.JSONDecodeError:
@@ -118,29 +193,45 @@ class GetCartDetail(APIView):
         if type(body.get('cart')) != list:
             return HttpResponseBadRequest()
 
-        if len(body.get('cart')) == 0:
-            return Response([])
+        cart_uuids = body.get("cart")
+        if len(cart_uuids) == 0:
+            return Response(data=[])
 
-        courses = []
-        for uuid in body.get('cart'):
-            item = Course.objects.filter(course_uuid=uuid)
+        cart_items, total_cost = self.process_cart_data(cart_uuids)
+        if cart_items is None:
+            return HttpResponseBadRequest()
 
-            if not item:
-                return HttpResponseBadRequest()
+        serializer = CartItemserializer(cart_items, many=True)
 
-            courses.append(item[0])
+        return Response({
+            "cart_detail": serializer.data,
+            "cart_total": str(total_cost)
+        })
 
-        serializer = CartItemserializer(courses, many = True)
+    def post(self, request, *args, **kwargs):
+        try:
+            body = json.loads(request.body)
+        except json.decoder.JSONDecodeError:
+            return HttpResponseBadRequest()
 
-        cart_total = Decimal(0.00)
-        for item in serializer.data:
-            cart_total+=Decimal(item.get('price'))
+        if type(body.get('cart')) != list:
+            return HttpResponseBadRequest()
 
-        return Response(data={
-            'cart_detail':serializer.data,
-            'cart_total':cart_total
-        }, status = status.HTTP_200_OK)
+        cart_uuids = body.get("cart")
+        if len(cart_uuids) == 0:
+            return Response(data=[])
 
+        cart_items, total_cost = self.process_cart_data(cart_uuids)
+        if cart_items is None:
+            return HttpResponseBadRequest()
+
+        serializer = CartItemserializer(cart_items, many=True)
+
+        return Response({
+            "cart_detail": serializer.data,
+            "cart_total": str(total_cost)
+        })
+    
 #Access to purchased courses:
 class CourseStudy(APIView):
     # permission_classes=[IsAuthenticated]

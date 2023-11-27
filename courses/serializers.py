@@ -1,6 +1,6 @@
 from rest_framework.serializers import ModelSerializer
 from rest_framework import serializers
-from .models import Course, Comment, CourseSection, Episode
+from .models import Course, Comment, CourseSection, Episode#, CartItem
 from users.serializers import UserSerializer
 
 #change
@@ -14,6 +14,7 @@ class CourseDisplaySerializer(ModelSerializer):
         model = Course
         fields = ["course_uuid", "title", "student_no", "author", "price"]
         #:   ,"image_url"
+
 class CommentSerializer(ModelSerializer):
     user = UserSerializer(read_only=True)
     class Meta:
@@ -128,4 +129,7 @@ class CartItemserializer(ModelSerializer):
             'price'
             # 'image_url'
         ]
+
+
+
 
