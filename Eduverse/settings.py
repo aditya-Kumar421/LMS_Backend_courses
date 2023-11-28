@@ -153,6 +153,6 @@ STATIC_ROOT = BASE_DIR/'staticfiles'
 # STATICFILES_DIRS = [
 #     BASE_DIR/'static',
 # ]
-
+CART_SESSION_ID = 'cart'
 #auth setting:
 AUTH_USER_MODEL = 'users.User'

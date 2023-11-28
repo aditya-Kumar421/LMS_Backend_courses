@@ -94,7 +94,16 @@ class Comment(models.Model):
     message=models.TextField()
     created=models.DateTimeField(auto_now_add=True)
 #added:
-# class CartItem(models.Model):
+# class Cart(models.Model):
 #     author=models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
 #     title=models.CharField(max_length = 250)
 #     price = models.DecimalField(max_digits=5, decimal_places=2)
+
+class Product(models.Model):
+    name = models.CharField(max_length=255)
+    author=models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
+    title=models.CharField(max_length = 250)
+    price = models.DecimalField(max_digits=5, decimal_places=2)
+    
+    def __str__(self) -> str:
+        return str(self.name)

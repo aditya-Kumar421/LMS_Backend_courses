@@ -1,6 +1,6 @@
 from rest_framework.serializers import ModelSerializer
 from rest_framework import serializers
-from .models import Course, Comment, CourseSection, Episode#, CartItem
+from .models import Course, Comment, CourseSection, Episode, Product#, Cart
 from users.serializers import UserSerializer
 
 #change
@@ -116,18 +116,26 @@ class CourseListSerailizer(ModelSerializer):
             'total_lectures'
         ]
 #change:'image_url',
-class CartItemserializer(ModelSerializer):
-    author=UserSerializer()
-    #change
-    # image_url = serializers.CharField(source='get_absolute_image_url')
+# class CartItemserializer(ModelSerializer):
+#     author=UserSerializer()
+#     #change
+#     # image_url = serializers.CharField(source='get_absolute_image_url')
     
+#     class Meta:
+#         model = Cart
+#         fields = [
+#             'author',
+#             'title',
+#             'price'
+#             # 'image_url'
+#         ]
+class ProductSerializer(serializers.ModelSerializer):
     class Meta:
-        model = Course
+        model = Product
         fields = [
             'author',
             'title',
             'price'
-            # 'image_url'
         ]
 
 

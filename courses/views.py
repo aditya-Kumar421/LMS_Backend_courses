@@ -1,7 +1,8 @@
-from .serializers import CourseDisplaySerializer, CourseUnpaidSerializer, CourseListSerailizer, CommentSerializer, CartItemserializer,CoursePaidSerializer
+from .serializers import CourseDisplaySerializer, CourseUnpaidSerializer, CourseListSerailizer, CommentSerializer,CoursePaidSerializer, ProductSerializer#, CartItemserializer
 
-from courses.models import Sector, Course#, CartItem
+from courses.models import Sector, Course,Product
 from users.models import User
+# from courses.service import Cart
 
 from rest_framework.response import Response
 from rest_framework.views import APIView
@@ -73,7 +74,7 @@ class SectorCourse(APIView):
 class SearchCourse(APIView):
 
     def get(self, request, search_term):
-        matches=Course.objects.filter(Q(title__icontains=search_term)| Q(description__icontains=search_term))
+        matches=Course.objects.filter(Q(title__icontains=search_term))      #| Q(description__icontains=search_term)
         serializer=CourseListSerailizer(matches, many=True)
         return Response(data=serializer.data, status=status.HTTP_200_OK)
 
@@ -168,70 +169,70 @@ class AddComment(APIView):
 
     #     return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 #adding with get and post both:
-class GetCartDetail(APIView):
-    def process_cart_data(self, cart_uuids):
-        courses = []
-        cart_cost = Decimal('0.00')
-
-        for uuid in cart_uuids:
-            item = Course.objects.filter(course_uuid=uuid)
-
-            if not item:
-                return None
-
-            courses.append(item[0])
-            cart_cost += item[0].price
-
-        return courses, cart_cost
-
-    def get(self, request):
-        try:
-            body = json.loads(request.body)
-        except json.decoder.JSONDecodeError:
-            return HttpResponseBadRequest()
-
-        if type(body.get('cart')) != list:
-            return HttpResponseBadRequest()
-
-        cart_uuids = body.get("cart")
-        if len(cart_uuids) == 0:
-            return Response(data=[])
-
-        cart_items, total_cost = self.process_cart_data(cart_uuids)
-        if cart_items is None:
-            return HttpResponseBadRequest()
-
-        serializer = CartItemserializer(cart_items, many=True)
-
-        return Response({
-            "cart_detail": serializer.data,
-            "cart_total": str(total_cost)
-        })
-
-    def post(self, request, *args, **kwargs):
-        try:
-            body = json.loads(request.body)
-        except json.decoder.JSONDecodeError:
-            return HttpResponseBadRequest()
-
-        if type(body.get('cart')) != list:
-            return HttpResponseBadRequest()
-
-        cart_uuids = body.get("cart")
-        if len(cart_uuids) == 0:
-            return Response(data=[])
-
-        cart_items, total_cost = self.process_cart_data(cart_uuids)
-        if cart_items is None:
-            return HttpResponseBadRequest()
-
-        serializer = CartItemserializer(cart_items, many=True)
-
-        return Response({
-            "cart_detail": serializer.data,
-            "cart_total": str(total_cost)
-        })
+# class CartItemList(APIView):
     
+#     def post(self, request, *args, **kwargs):
+#         try:
+#             body = json.loads(request.body)
+#         except json.decoder.JSONDecodeError:
+#             return HttpResponseBadRequest()
+
+#         if type(body.get('cart')) != list:
+#             return HttpResponseBadRequest()
+
+#         cart_uuids = body.get("cart")
+#         if len(cart_uuids) == 0:
+#             return Response(data=[])
+
+#         cart_items, total_cost = self.process_cart_data(cart_uuids)
+#         if cart_items is None:
+#             return HttpResponseBadRequest()
+
+#         serializer = CartItemserializer(cart_items, many=True)
+
+#         return Response(status= status.HTTP_201_CREATED)
+    
+# class GetCartDetail(APIView):
+#     def process_cart_data(self, cart_uuids):
+#         courses = []
+#         cart_cost = Decimal('0.00')
+
+#         for uuid in cart_uuids:
+#             item = Course.objects.filter(course_uuid=uuid)
+
+#             if not item:
+#                 return None
+
+#             courses.append(item[0])
+#             cart_cost += item[0].price
+
+#         return courses, cart_cost
+
+#     def get(self, request):
+#         try:
+#             body = json.loads(request.body)
+#         except json.decoder.JSONDecodeError:
+#             return HttpResponseBadRequest()
+
+#         if type(body.get('cart')) != list:
+#             return HttpResponseBadRequest()
+
+#         cart_uuids = body.get("cart")
+#         if len(cart_uuids) == 0:
+#             return Response(data=[])
+
+#         cart_items, total_cost = self.process_cart_data(cart_uuids)
+#         if cart_items is None:
+#             return HttpResponseBadRequest()
+
+#         serializer = CartItemserializer(cart_items, many=True)
+
+#         return Response({
+#             "cart_detail": serializer.data,
+#             "cart_total": str(total_cost)
+#         })
+    
+
 #Access to purchased courses:
 class CourseStudy(APIView):
     # permission_classes=[IsAuthenticated]
@@ -249,4 +250,66 @@ class CourseStudy(APIView):
         serializer= CoursePaidSerializer(course)
 
         return Response(serializer.data, status = status.HTTP_200_OK)
-        
+    
+#Add to cart:
+# class GetCartDetail(APIView):
+#     def get_serilizer_class(self):
+#         queryset = Cart.objects.all()
+#         serializer_class = CartItemserializer
+
+
+class ProductAPI(APIView):
+    serializer_class = ProductSerializer
+
+    def get(self, request, format=None):
+        qs = Product.objects.all()
+
+        return Response(
+            {"data": self.serializer_class(qs, many=True).data}, 
+            status=status.HTTP_200_OK
+            )
+
+    def post(self, request, *args, **kwargs):
+        serializer = self.serializer_class(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        serializer.save()
+
+        return Response(
+            serializer.data, 
+            status=status.HTTP_201_CREATED
+            )
+    
+# class CartAPI(APIView):
+#     """
+#     Single API to handle cart operations
+#     """
+#     def get(self, request, format=None):
+#         cart = Cart(request)
+
+#         return Response(
+#             {"data": list(cart.__iter__()), 
+#             "cart_total_price": cart.get_total_price()},
+#             status=status.HTTP_200_OK
+#             )
+
+#     def post(self, request, **kwargs):
+#         cart = Cart(request)
+
+#         if "remove" in request.data:
+#             product = request.data["products"]
+#             cart.remove(product)
+
+#         elif "clear" in request.data:
+#             cart.clear()
+
+#         else:
+#             product = request.data
+#             cart.add(
+#                     product=product["products"],
+#                     quantity=product["quantity"],
+#                     overide_quantity=product["overide_quantity"] if "overide_quantity" in product else False
+#                 )
+
+#         return Response(
+#             {"message": "cart updated"},
+#             status=status.HTTP_202_ACCEPTED)
