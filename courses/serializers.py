@@ -1,6 +1,6 @@
 from rest_framework.serializers import ModelSerializer
 from rest_framework import serializers
-from .models import Course, Comment, CourseSection, Episode, Product#, Cart
+from .models import Course, Comment, CourseSection, Episode, Cart#, Product,
 from users.serializers import UserSerializer
 
 #change
@@ -131,7 +131,7 @@ class CourseListSerailizer(ModelSerializer):
 #         ]
 class ProductSerializer(serializers.ModelSerializer):
     class Meta:
-        model = Product
+        model = Cart
         fields = [
             'author',
             'title',

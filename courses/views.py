@@ -1,6 +1,6 @@
 from .serializers import CourseDisplaySerializer, CourseUnpaidSerializer, CourseListSerailizer, CommentSerializer,CoursePaidSerializer, ProductSerializer#, CartItemserializer
 
-from courses.models import Sector, Course,Product
+from courses.models import Sector, Course,Cart
 from users.models import User
 # from courses.service import Cart
 
@@ -258,11 +258,11 @@ class CourseStudy(APIView):
 #         serializer_class = CartItemserializer
 
 
-class ProductAPI(APIView):
+class CartAPI(APIView):
     serializer_class = ProductSerializer
 
     def get(self, request, format=None):
-        qs = Product.objects.all()
+        qs = Cart.objects.all()
 
         return Response(
             {"data": self.serializer_class(qs, many=True).data}, 

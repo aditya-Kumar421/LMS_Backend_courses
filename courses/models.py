@@ -99,7 +99,7 @@ class Comment(models.Model):
 #     title=models.CharField(max_length = 250)
 #     price = models.DecimalField(max_digits=5, decimal_places=2)
 
-class Product(models.Model):
+class Cart(models.Model):
     name = models.CharField(max_length=255)
     author=models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
     title=models.CharField(max_length = 250)
