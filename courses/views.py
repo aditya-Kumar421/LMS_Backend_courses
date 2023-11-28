@@ -1,8 +1,7 @@
-from .serializers import CourseDisplaySerializer, CourseUnpaidSerializer, CourseListSerailizer, CommentSerializer,CoursePaidSerializer, ProductSerializer#, CartItemserializer
+from .serializers import CourseDisplaySerializer, CourseUnpaidSerializer, CourseListSerailizer, CommentSerializer,CoursePaidSerializer, ProductSerializer
 
 from courses.models import Sector, Course,Cart
 from users.models import User
-# from courses.service import Cart
 
 from rest_framework.response import Response
 from rest_framework.views import APIView
@@ -12,7 +11,6 @@ from django.http import HttpResponseBadRequest, HttpResponseNotAllowed
 from django.db.models import Q
 
 import json
-from decimal import Decimal
 
 #Dashboard for courses
 class CoursesHomeView(APIView):
@@ -107,132 +105,6 @@ class AddComment(APIView):
         else:
             return Response(data=serializer.errors,status =status.HTTP_400_BAD_REQUEST)
 
-#adding to cart courses:
-#class GetCartDetail(APIView):
-    # def get(self, request):
-    #     cart_items = Course.objects.filter(user=request.user)
-    #     serializer = CartItemserializer(cart_items, many=True)
-    #     return Response(serializer.data)
-    
-    # def post(self,request,*args, **kwargs):
-
-    #     try:
-    #         body =  json.loads(request.body)
-        
-    #     except json.decoder.JSONDecodeError:
-    #         return HttpResponseBadRequest()
-
-    #     if type(body.get('cart')) != list:
-    #         return HttpResponseBadRequest()
-
-    #     if len(body.get("cart")) ==0:
-    #         return Response(data=[])
-
-    #     courses=[]
-
-    #     for uuid in body.get("cart"):
-    #         item = Course.objects.filter(course_uuid=uuid)
-
-    #         if not item:
-    #             return HttpResponseBadRequest()
-            
-    #         courses.append(item[0])
-
-    #         # serializer for cart
-    #     serializer =CartItemserializer(courses,many=True)
-
-    #     #TODO : After you have added the price field
-    #     cart_cost=Decimal(0.00)
-
-    #     for item in serializer.data:
-           
-    #         cart_cost+=Decimal(item.get("price"))
-
-    #     return Response(data={"cart_detail":serializer.data,"cart_total":str(cart_cost)})
-
-    # def get(self, request):
-    #     cart_items = CartItem.objects.filter(user=request.user)
-    #     serializer = CartItemserializer(cart_items, many=True)
-    #     return Response(serializer.data)
-
-    # def post(self, request):
-    #     serializer = CartItemserializer(data=request.data)
-    #     if serializer.is_valid():
-    #         cart_total = Decimal(0.00)
-    #         for item in serializer.data:
-    #             cart_total+=Decimal(item.get('price'))
-    #         serializer.save(user=request.user)
-    #         return Response(data={
-    #         'cart_detail':serializer.data,
-    #         'cart_total':cart_total
-    #     }, status = status.HTTP_200_OK)
-
-    #     return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-#adding with get and post both:
-# class CartItemList(APIView):
-    
-#     def post(self, request, *args, **kwargs):
-#         try:
-#             body = json.loads(request.body)
-#         except json.decoder.JSONDecodeError:
-#             return HttpResponseBadRequest()
-
-#         if type(body.get('cart')) != list:
-#             return HttpResponseBadRequest()
-
-#         cart_uuids = body.get("cart")
-#         if len(cart_uuids) == 0:
-#             return Response(data=[])
-
-#         cart_items, total_cost = self.process_cart_data(cart_uuids)
-#         if cart_items is None:
-#             return HttpResponseBadRequest()
-
-#         serializer = CartItemserializer(cart_items, many=True)
-
-#         return Response(status= status.HTTP_201_CREATED)
-    
-# class GetCartDetail(APIView):
-#     def process_cart_data(self, cart_uuids):
-#         courses = []
-#         cart_cost = Decimal('0.00')
-
-#         for uuid in cart_uuids:
-#             item = Course.objects.filter(course_uuid=uuid)
-
-#             if not item:
-#                 return None
-
-#             courses.append(item[0])
-#             cart_cost += item[0].price
-
-#         return courses, cart_cost
-
-#     def get(self, request):
-#         try:
-#             body = json.loads(request.body)
-#         except json.decoder.JSONDecodeError:
-#             return HttpResponseBadRequest()
-
-#         if type(body.get('cart')) != list:
-#             return HttpResponseBadRequest()
-
-#         cart_uuids = body.get("cart")
-#         if len(cart_uuids) == 0:
-#             return Response(data=[])
-
-#         cart_items, total_cost = self.process_cart_data(cart_uuids)
-#         if cart_items is None:
-#             return HttpResponseBadRequest()
-
-#         serializer = CartItemserializer(cart_items, many=True)
-
-#         return Response({
-#             "cart_detail": serializer.data,
-#             "cart_total": str(total_cost)
-#         })
-    
-
 #Access to purchased courses:
 class CourseStudy(APIView):
     # permission_classes=[IsAuthenticated]
@@ -250,14 +122,8 @@ class CourseStudy(APIView):
         serializer= CoursePaidSerializer(course)
 
         return Response(serializer.data, status = status.HTTP_200_OK)
-    
-#Add to cart:
-# class GetCartDetail(APIView):
-#     def get_serilizer_class(self):
-#         queryset = Cart.objects.all()
-#         serializer_class = CartItemserializer
 
-
+#adding to cart courses:
 class CartAPI(APIView):
     serializer_class = ProductSerializer
 
@@ -279,37 +145,3 @@ class CartAPI(APIView):
             status=status.HTTP_201_CREATED
             )
     
-# class CartAPI(APIView):
-#     """
-#     Single API to handle cart operations
-#     """
-#     def get(self, request, format=None):
-#         cart = Cart(request)
-
-#         return Response(
-#             {"data": list(cart.__iter__()), 
-#             "cart_total_price": cart.get_total_price()},
-#             status=status.HTTP_200_OK
-#             )
-
-#     def post(self, request, **kwargs):
-#         cart = Cart(request)
-
-#         if "remove" in request.data:
-#             product = request.data["products"]
-#             cart.remove(product)
-
-#         elif "clear" in request.data:
-#             cart.clear()
-
-#         else:
-#             product = request.data
-#             cart.add(
-#                     product=product["products"],
-#                     quantity=product["quantity"],
-#                     overide_quantity=product["overide_quantity"] if "overide_quantity" in product else False
-#                 )
-
-#         return Response(
-#             {"message": "cart updated"},
-#             status=status.HTTP_202_ACCEPTED)

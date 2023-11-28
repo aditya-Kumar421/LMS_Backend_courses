@@ -6,13 +6,11 @@ from courses.views import (
     SearchCourse,
     AddComment,
     CourseStudy,
-    #ProductAPI,
     CartAPI,
-)  # , GetCartDetail
+)
 
 urlpatterns = [
     path("cart/",CartAPI.as_view(), name="cart"),
-    # path("cart/", CartAPI.as_view(), name="cart"),
     path("detail/<uuid:course_uuid>/", CourseDetail.as_view()),
     path("search/<str:search_term>/", SearchCourse.as_view()),
     path("study/<uuid:course_uuid>/", CourseStudy.as_view()),
