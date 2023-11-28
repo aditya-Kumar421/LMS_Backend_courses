@@ -25,13 +25,14 @@ class CommentSerializer(ModelSerializer):
 
 class EpisodeUnpaidSerializer(ModelSerializer):
     length=serializers.CharField(source='get_video_length_time')
+    file=serializers.CharField(source='get_absolute_url')
     class Meta:
         model=Episode
         fields=[
             "title",
             "length",
-            'id', 
-        ]
+            "file" 
+        ] 
 
 class EpisodePaidSerializer(ModelSerializer):
     length=serializers.CharField(source='get_video_length_time')
