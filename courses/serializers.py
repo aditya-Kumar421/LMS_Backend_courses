@@ -127,8 +127,8 @@ class ProductSerializer(serializers.ModelSerializer):
         fields = [
             'author',
             'title',
-            'price'
-            ,'image_url'
+            'price',
+            'image_url'
         ]
 
 
