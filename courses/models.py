@@ -11,12 +11,12 @@ class Sector(models.Model):
     sector_uuid =models.UUIDField(default=uuid.uuid4, unique=True)
     related_course=models.ManyToManyField('course',  blank=True)
     #change
-    # sector_image=models.ImageField(upload_to='sector_image/')
+    sector_image=models.ImageField(upload_to='sector_image/')
 
     # /media/sector_image/what.png
     #change
-    # def get_image_absolute_url(self):
-    #     return 'https://courses-eduverse.onrender.com'+self.sector_image.url
+    def get_image_absolute_url(self):
+        return 'https://courses-eduverse.onrender.com'+self.sector_image.url
     
 class Course(models.Model):
     title=models.CharField(max_length = 250)
@@ -28,7 +28,7 @@ class Course(models.Model):
     course_section=models.ManyToManyField('CourseSection', blank=True)
     comments=models.ManyToManyField('Comment', blank=True)
     #change
-    # image_url = models.ImageField(upload_to='course_images/')
+    image_url = models.ImageField(upload_to='course_images/')
     course_uuid = models.UUIDField(default=uuid.uuid4, unique=True)
     price = models.DecimalField(max_digits=5, decimal_places=2)
 
@@ -53,8 +53,8 @@ class Course(models.Model):
 
         return get_timer(length, type='short')
     #change
-    # def get_absolute_image_url(self):
-    #     return 'https://courses-eduverse.onrender.com'+self.image_url.url
+    def get_absolute_image_url(self):
+        return 'https://courses-eduverse.onrender.com'+self.image_url.url
 
 class CourseSection(models.Model):
     section_title=models.CharField(max_length=255)

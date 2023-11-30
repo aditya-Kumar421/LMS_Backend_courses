@@ -28,7 +28,7 @@ class CoursesHomeView(APIView):
                 'sector_uuid':sector.sector_uuid,
                 'featured_course':courses_serializer.data,
                 #change
-                # 'sector_image':sector.get_image_absolute_url()
+                'sector_image':sector.get_image_absolute_url()
             }
 
             sector_response.append(sector_obj)

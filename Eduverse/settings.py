@@ -12,6 +12,7 @@ https://docs.djangoproject.com/en/4.2/ref/settings/
 
 from pathlib import Path
 import os
+
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -41,7 +42,6 @@ INSTALLED_APPS = [
     "courses",
     "users",
     "rest_framework",
-    
 ]
 
 MIDDLEWARE = [
@@ -54,7 +54,7 @@ MIDDLEWARE = [
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
 ]
-#Cors:
+# Cors:
 CORS_ALLOW_ALL_ORIGINS = True
 
 # CORS_ALLOWED_ORIGINS = [
@@ -144,15 +144,15 @@ STATIC_URL = "/static/"
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
 
-#Routes
-MEDIA_URL = '/media/'
-MEDIA_ROOT = BASE_DIR/'media'
+# Routes
+MEDIA_URL = "/media/"
+MEDIA_ROOT = BASE_DIR / "media"
 
-STATIC_ROOT = BASE_DIR/'staticfiles'
+STATIC_ROOT = BASE_DIR / "staticfiles"
 
 # STATICFILES_DIRS = [
 #     BASE_DIR/'static',
 # ]
-CART_SESSION_ID = 'cart'
-#auth setting:
-AUTH_USER_MODEL = 'users.User'
+CART_SESSION_ID = "cart"
+# auth setting:
+AUTH_USER_MODEL = "users.User"
