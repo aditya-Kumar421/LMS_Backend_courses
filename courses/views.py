@@ -77,6 +77,7 @@ class SearchCourse(APIView):
         return Response(data=serializer.data, status=status.HTTP_200_OK)
 
 #Comment section in detail of course:
+
 class AddComment(APIView):
     # permission_classes=[IsAuthenticated]
     def post(self, request, course_uuid):
@@ -85,25 +86,22 @@ class AddComment(APIView):
         except Course.DoesNotExist:
             return HttpResponseBadRequest('Course does not exist')
 
-        try:
-            content = json.loads(request.body)   
-
-        except json.decoder.JSONDecodeError:
-            return Response("Please a json body", status= status.HTTP_400_BAD_REQUEST)
+        content = request.data  # Access parsed data through request.data
 
         if not content.get('message'):
-            return Response(status= status.HTTP_400_BAD_REQUEST)
+            return Response("Message field is required", status=status.HTTP_400_BAD_REQUEST)
         
-        serializer=CommentSerializer(data=content)
+        serializer = CommentSerializer(data=content)
 
         if serializer.is_valid():
-            author=User.objects.get(id=1)
-            comment = serializer.save(user = author)
-            # comment = serializer.save(user = request.user)
+            author = User.objects.get(id=1)  # Replace with appropriate logic to get the author/user
+            comment = serializer.save(user=author)
+            # comment = serializer.save(user=request.user)  # Use request.user for the authenticated user
             course.comments.add(comment)
-            return Response(status=status.HTTP_201_CREATED )
+            return Response(status=status.HTTP_201_CREATED)
         else:
-            return Response(data=serializer.errors,status =status.HTTP_400_BAD_REQUEST)
+            return Response(data=serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
 
 #Access to purchased courses:
 class CourseStudy(APIView):

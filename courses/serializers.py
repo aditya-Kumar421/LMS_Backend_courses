@@ -120,17 +120,14 @@ class CourseListSerailizer(ModelSerializer):
 
 class ProductSerializer(serializers.ModelSerializer):
     #change
-    image_url = serializers.CharField(source='get_absolute_image_url')
+    #image_url = serializers.CharField(source='get_absolute_image_url')
 
     class Meta:
         model = Cart
         fields = [
             'author',
             'title',
-            'price',
-            'image_url'
+            'price'
         ]
-
-
 
 

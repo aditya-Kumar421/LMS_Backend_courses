@@ -167,3 +167,36 @@
 from decimal import Decimal
 
 
+#How to handle comment section
+from rest_framework import status
+from rest_framework.response import Response
+from rest_framework.views import APIView
+
+#class AddComment(APIView):
+    # permission_classes=[IsAuthenticated]
+    # def post(self, request, course_uuid):
+    #     try:
+    #         course = Course.objects.get(course_uuid=course_uuid)
+    #     except Course.DoesNotExist:
+    #         return HttpResponseBadRequest('Course does not exist')
+
+    #     try:
+    #         content = json.loads(request.body)   
+
+    #     except json.decoder.JSONDecodeError:
+    #         return Response("Please a json body", status= status.HTTP_400_BAD_REQUEST)
+
+    #     if not content.get('message'):
+    #         return Response(status= status.HTTP_400_BAD_REQUEST)
+        
+    #     serializer=CommentSerializer(data=content)
+
+    #     if serializer.is_valid():
+    #         author=User.objects.get(id=1)
+    #         comment = serializer.save(user = author)
+    #         # comment = serializer.save(user = request.user)
+    #         course.comments.add(comment)
+    #         return Response(status=status.HTTP_201_CREATED )
+    #     else:
+    #         return Response(data=serializer.errors,status =status.HTTP_400_BAD_REQUEST)
+

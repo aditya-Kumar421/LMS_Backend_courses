@@ -99,6 +99,3 @@ class Cart(models.Model):
     author=models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
     title=models.CharField(max_length = 250)
     price = models.DecimalField(max_digits=5, decimal_places=2, default=0)
-    image_url = models.ImageField(upload_to='course_images/')
-    def get_absolute_image_url(self):
-        return 'https://courses-eduverse.onrender.com'+self.image_url.url
