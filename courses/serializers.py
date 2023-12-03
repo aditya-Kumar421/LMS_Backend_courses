@@ -74,7 +74,6 @@ class CourseUnpaidSerializer(ModelSerializer):
     student_no=serializers.IntegerField(source='get_enrolled_student')
     total_lectures=serializers.IntegerField(source='get_total_lectures')
     total_duration=serializers.CharField(source='total_course_length')
-    #change
     image_url=serializers.CharField(source='get_absolute_image_url')
     class Meta:
         model=Course
@@ -102,7 +101,6 @@ class CourseListSerailizer(ModelSerializer):
     author=UserSerializer()
     description=serializers.CharField(source='get_brief_description')
     total_lectures=serializers.IntegerField(source='get_total_lectures')
-    #change
     image_url=serializers.CharField(source='get_absolute_image_url')
     class Meta:
         model=Course
@@ -120,10 +118,6 @@ class CourseListSerailizer(ModelSerializer):
 class ProductSerializer(serializers.ModelSerializer):
     class Meta:
         model = Cart
-        fields = [
-            'author',
-            'title',
-            'price'
-        ]
+        exclude=['id']
 
 

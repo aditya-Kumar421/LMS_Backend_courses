@@ -10,11 +10,8 @@ class Sector(models.Model):
     name=models.CharField(max_length =255)
     sector_uuid =models.UUIDField(default=uuid.uuid4, unique=True)
     related_course=models.ManyToManyField('course',  blank=True)
-    #change
     sector_image=models.ImageField(upload_to='sector_image/')
 
-    # /media/sector_image/what.png
-    #change
     def get_image_absolute_url(self):
         return 'https://courses-eduverse.onrender.com'+self.sector_image.url
     
@@ -27,7 +24,6 @@ class Course(models.Model):
     language=models.CharField(max_length =50)
     course_section=models.ManyToManyField('CourseSection', blank=True)
     comments=models.ManyToManyField('Comment', blank=True)
-    #change
     image_url = models.ImageField(upload_to='course_images/')
     course_uuid = models.UUIDField(default=uuid.uuid4, unique=True)
     price = models.DecimalField(max_digits=5, decimal_places=2)
@@ -52,7 +48,6 @@ class Course(models.Model):
                 length+=episode.length
 
         return get_timer(length, type='short')
-    #change
     def get_absolute_image_url(self):
         return 'https://courses-eduverse.onrender.com'+self.image_url.url
 
@@ -95,7 +90,5 @@ class Comment(models.Model):
     created=models.DateTimeField(auto_now_add=True)
 
 class Cart(models.Model):
-    name = models.CharField(max_length=255,  default='default_value')
-    author=models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
     title=models.CharField(max_length = 250)
     price = models.DecimalField(max_digits=5, decimal_places=2, default=0)

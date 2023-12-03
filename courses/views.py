@@ -127,19 +127,17 @@ class CartAPI(APIView):
 
     def get(self, request, format=None):
         qs = Cart.objects.all()
-
         return Response(
             {"data": self.serializer_class(qs, many=True).data}, 
             status=status.HTTP_200_OK
             )
-
     def post(self, request, *args, **kwargs):
         serializer = self.serializer_class(data=request.data)
         serializer.is_valid(raise_exception=True)
         serializer.save()
 
         return Response(
-            serializer.data, 
+            {"message": "Added into cart successfully"}, 
             status=status.HTTP_201_CREATED
             )
     
