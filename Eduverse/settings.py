@@ -24,7 +24,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = "django-insecure-&u^^bdqf*7=qm+@xk!59!k%k1o421^q01y0vib(fdd1oavaw7%"
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
 ALLOWED_HOSTS = ["*"]
 
@@ -156,3 +156,20 @@ STATIC_ROOT = BASE_DIR / "staticfiles"
 CART_SESSION_ID = "cart"
 # auth setting:
 AUTH_USER_MODEL = "users.User"
+
+#security:
+# 1.Cross-site Scripting (XSS):
+SECURE_BROWSER_XSS_FILTER = True
+SECURE_CONTENT_TYPE_NOSNIFF = True
+
+# 2.SSL redirect:
+SECURE_SSL_REDIRECT = True
+
+# 3.HTTP Strict Transport Security (HSTS):
+SECURE_HSTS_SECONDS = 86400
+SECURE_HSTS_PRELOAD = True
+SECURE_HSTS_INCLUDE_SUBDOMAINS = True
+
+# 4.Cross-site request forgery (CSRF) protection:
+SESSION_COOKIE_SECURE = True
+CSRF_COOKIE_SECURE = True
