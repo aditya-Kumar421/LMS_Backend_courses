@@ -1,0 +1,12 @@
+services:
+  - name: Eduverse
+    env: python
+    buildCommand: python manage.py collectstatic --noinput
+    startCommand: gunicorn Eduverse.wsgi --bind 0.0.0.0:$PORT
+    envVars:
+      - key: DJANGO_SETTINGS_MODULE
+        value: 'Eduverse.settings'
+    automaticDomain: true  # If you want Render to handle the domain
+
+databases:
+  - name: db.sqlite3
