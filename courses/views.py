@@ -62,14 +62,12 @@ class SectorCourse(APIView):
             'total_students':total_students,
             },status=status.HTTP_200_OK )
     
-
 class SearchCourse(APIView):
 
     def get(self, request, search_term):
         matches=Course.objects.filter(Q(title__icontains=search_term))     
         serializer=CourseListSerailizer(matches, many=True)
         return Response(data=serializer.data, status=status.HTTP_200_OK)
-
 
 class AddComment(APIView):
     def post(self, request, course_uuid):
